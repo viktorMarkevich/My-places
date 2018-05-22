@@ -1,26 +1,30 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'jwt'
 
-describe AuthenticationController, type: :api do
-
-  context 'when the cat does not exist' do
-
-    before do
-      let(:user) { build :user }
+describe AuthenticationController, type: :controller do
+  let(:json) { JSON.parse(response.body) }
+  
+  context 'when the user is exist' do
+    let(:user) { create :user }
+    # before do
       # token = JWT.encode({user: User.first.id},
-      #                    ENV["AUTH_SECRET"], "HS256")
-      # header "Authorization", "Bearer #{token}"
-      # get "/cats/-1/hobbies"
-    end
-
-    it 'responds with a 404 status' do
-      p user
-      # expect(last_response.status).to eq 404
-    end
-
-    # it 'responds with a message of Not found' do
-    #   message = json["errors"].first["detail"]
-    #   expect(message).to eq("Not found")
+      #                    ENV['AUTH_SECRET'], 'HS256')
+      # header 'Authorization', 'Bearer #{token}'
+      # get '/cats/-1/hobbies'
     # end
+
+    it 'responds with a auth_token' do
+      post 'authenticate', params: { email: user.email,
+                                     password: '123456' }, as: :json
+      expect(json['auth_token'].length).to eq 105
+    end
+  end
+
+  context 'when the user is not exist' do
+    it 'responds with a auth_token' do
+      post 'authenticate', params: { email: 'fake@email.com',
+                                     password: '123456' }, as: :json
+      expect(json).to eq({ 'error': { 'user_authentication': ['invalid credentials'] } })
+    end
   end
 end
