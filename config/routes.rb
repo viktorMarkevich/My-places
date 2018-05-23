@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   post 'authenticate', to: 'authentication#authenticate'
   resources :trips
 
-  resources :registrations, only: :create do
+  resources :registrations, only: :create, :defaults => { :format => 'json' } do
+  # resources :registrations, only: :create, :defaults => { :format => 'json' } do
     collection do
       post 'confirm'
     end
