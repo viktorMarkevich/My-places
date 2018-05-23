@@ -6,6 +6,7 @@ class User < ApplicationRecord
   after_create :generate_confirmation_email
 
   validates :email, :first_name, :last_name, :password, :password_confirmation, presence: true, on: :create
+  validates :email, :first_name, :last_name, :password, presence: true, on: :update
 
   def full_name
     "#{first_name} #{last_name}"
@@ -22,7 +23,7 @@ class User < ApplicationRecord
   def mark_as_confirmed!
     self.confirmation_token = nil
     self.confirmed_at = Time.now.utc
-    save
+    save(validate: false)
   end
 
   private
