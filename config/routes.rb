@@ -4,4 +4,10 @@ Rails.application.routes.draw do
 
   post 'authenticate', to: 'authentication#authenticate'
   resources :trips
+
+  resources :registrations, only: :create do
+    collection do
+      post 'confirm'
+    end
+  end
 end
