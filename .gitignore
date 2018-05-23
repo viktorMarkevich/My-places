@@ -33,3 +33,4 @@
 .ruby-version
 .ruby-gemset
 .idea
+.env

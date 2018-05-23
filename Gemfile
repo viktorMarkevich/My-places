@@ -12,6 +12,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
 gem 'simple_command'
 # gem 'mini_magick', '~> 4.8'
+gem 'dotenv-rails'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -25,6 +26,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'

@@ -4,16 +4,6 @@ require 'jwt'
 describe RegistrationsController, type: :controller do
   let(:json) { JSON.parse(response.body) }
 
-  # context 'when the user is exist' do
-  #   let(:user) { create :user }
-  #
-  #   it 'responds with a auth_token' do
-  #     post 'authenticate', params: { email: user.email,
-  #                                    password: '123456' }, as: :json
-  #     expect(json['auth_token'].length).to eq 105
-  #   end
-  # end
-
   context 'when the user is not exist' do
     before :each do
       post :create, params: { user: { email: 'fake@email.com',
@@ -28,7 +18,7 @@ describe RegistrationsController, type: :controller do
     end
 
     it 'sends a confirmation email' do
-      expect{ User.last.deliver_confirmation }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect{ User.last.set_confirmation }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
   end
 end
