@@ -5,6 +5,8 @@ class User < ApplicationRecord
   before_create :generate_confirmation_instructions
   after_create :generate_confirmation_email
 
+  validates :email, :first_name, :last_name, :password, :password_confirmation, presence: true, on: :create
+
   def full_name
     "#{first_name} #{last_name}"
   end

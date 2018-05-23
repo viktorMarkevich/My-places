@@ -3,11 +3,15 @@ require 'jwt'
 
 describe RegistrationsController, type: :controller do
   let(:json) { JSON.parse(response.body) }
+  let(:user) { build :user }
 
   context 'when the user is not exist' do
     before :each do
-      post :create, params: { user: { email: 'fake@email.com',
-                                      password: '123456' }}, as: :json
+      post :create, params: { user: { email: user.email,
+                                      first_name: user.first_name,
+                                      last_name: user.last_name,
+                                      password: user.password,
+                                      password_confirmation: user.password_confirmation, }}, as: :json
     end
 
     it 'responds with a auth_token' do
