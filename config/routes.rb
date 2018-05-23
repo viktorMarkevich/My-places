@@ -1,14 +1,9 @@
 Rails.application.routes.draw do
-  resources :posts
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   post 'authenticate', to: 'authentication#authenticate'
-  resources :trips
 
-  resources :registrations, only: :create, :defaults => { :format => 'json' } do
-  # resources :registrations, only: :create, :defaults => { :format => 'json' } do
-    collection do
-      post 'confirm'
-    end
-  end
+  resources :trips
+  resources :registrations, only: :create
+  resources :confirmations, only: :create
 end
