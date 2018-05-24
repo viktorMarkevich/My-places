@@ -10,7 +10,8 @@ describe ConfirmationsController, type: :controller do
       post :create, params: { token: { confirmation_token: user.confirmation_token } }, as: :json
       user.reload
 
-      expect(json).to eq('status' => 'User confirmed successfully')
+      expect(json['status']).to eq('User confirmed successfully')
+      expect(json['auth_token'].present?).to eq true
       expect(user.confirmation_token.present?).to eq false
       expect(user.confirmation_sent_at.present?).to eq true
       expect(user.confirmed_at.present?).to eq true
