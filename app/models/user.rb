@@ -17,11 +17,6 @@ class User < ApplicationRecord
   end
 
   def confirmation_token_valid?
-    p '*'*100
-    p self
-    p  self.confirmation_sent_at
-    p  Time.now.utc
-    p '*'*100
     (self.confirmation_sent_at + 2.days) > Time.now.utc
   end
 

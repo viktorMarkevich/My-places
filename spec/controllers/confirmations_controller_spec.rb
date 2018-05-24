@@ -4,7 +4,7 @@ describe ConfirmationsController, type: :controller do
   let(:json) { JSON.parse(response.body) }
 
   context 'check token' do
-    let(:user) { create :user, confirmation_token: 'confirmation_token', confirmation_sent_at: Time.now.utc }
+    let(:user) { create :user }
 
     it 'when token is right' do
       post :create, params: { token: { confirmation_token: user.confirmation_token } }, as: :json
@@ -39,7 +39,8 @@ describe ConfirmationsController, type: :controller do
   end
 
   describe 'check token confirmation_sent_at time is expired' do
-    let(:user_2) { create :user, confirmation_token: 'confirmation_token2', confirmation_sent_at: Time.now.utc }
+    let(:user_2) { create :user }
+
     before do
       user_2.update_attributes(confirmation_sent_at:  user_2.confirmation_sent_at - 1.year)
     end
@@ -50,7 +51,7 @@ describe ConfirmationsController, type: :controller do
 
       expect(json).to eq('status' => 'Invalid token')
       expect(user_2.confirmation_token.present?).to eq true
-      expect(user_2.confirmation_sent_at.present?).to eq false
+      expect(user_2.confirmation_sent_at.present?).to eq true
       expect(user_2.confirmed_at.present?).to eq false
     end
   end
