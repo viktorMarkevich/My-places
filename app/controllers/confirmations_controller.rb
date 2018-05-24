@@ -16,7 +16,6 @@ class ConfirmationsController < ApplicationController
     end
   end
 
-
   private
 
   def token_params

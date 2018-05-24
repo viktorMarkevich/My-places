@@ -10,4 +10,9 @@ FactoryBot.define do
     password '123456'
     password_confirmation '123456'
   end
+
+  factory :confirmed_user, parent: :user do
+    confirmation_token nil
+    confirmed_at Time.now.utc
+  end
 end
