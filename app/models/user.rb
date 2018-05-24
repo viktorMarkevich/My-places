@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_secure_password
   has_secure_token :confirmation_token
 
+  has_many :trips
+
   before_create :generate_confirmation_instructions
   after_create :generate_confirmation_email
 
