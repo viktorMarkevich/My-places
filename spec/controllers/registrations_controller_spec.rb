@@ -11,7 +11,7 @@ describe RegistrationsController, type: :controller do
                                       first_name: user.first_name,
                                       last_name: user.last_name,
                                       password: user.password,
-                                      password_confirmation: user.password_confirmation, }}, as: :json
+                                      password_confirmation: user.password_confirmation }}, as: :json
     end
 
     it 'responds with a auth_token' do

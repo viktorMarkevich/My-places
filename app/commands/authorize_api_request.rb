@@ -28,5 +28,6 @@ class AuthorizeApiRequest
     else
       errors.add(:token, 'Missing token')
     end
+    nil
   end
 end

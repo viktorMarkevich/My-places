@@ -7,19 +7,18 @@ describe ConfirmationsController, type: :controller do
     let(:user) { create :user }
 
     it 'when token is right' do
-      post :create, params: { token: { confirmation_token: user.confirmation_token } }, as: :json
+      get :confirm, params: { token: { confirmation_token: user.confirmation_token } }, as: :json
       user.reload
 
-      # expect(json['status']).to eq('User confirmed successfully')
-      # expect(json['auth_token'].present?).to eq true
+      expect(json['status']).to eq('User confirmed successfully')
+      expect(json['auth_token'].present?).to eq true
       expect(user.confirmation_token.present?).to eq false
       expect(user.confirmation_sent_at.present?).to eq true
       expect(user.confirmed_at.present?).to eq true
-      expect(response).to redirect_to(dashboards_path())
     end
 
     it 'when token is wrong' do
-      post :create, params: { token: { confirmation_token: 'wrong_token' } }, as: :json
+      get :confirm, params: { token: { confirmation_token: 'wrong_token' } }, as: :json
       user.reload
 
       expect(json).to eq('status' => 'Invalid token')
@@ -29,7 +28,7 @@ describe ConfirmationsController, type: :controller do
     end
 
     it 'when token is empty' do
-      post :create, params: { token: nil }, as: :json
+      get :confirm, params: { token: nil }, as: :json
       user.reload
 
       expect(json).to eq('status' => 'Invalid token')
@@ -48,7 +47,7 @@ describe ConfirmationsController, type: :controller do
     end
 
     it 'when confirmation_sent_at time is expired' do
-      post :create, params: { token: { confirmation_token: user_2.confirmation_token } }, as: :json
+      get :confirm, params: { token: { confirmation_token: user_2.confirmation_token } }, as: :json
       user_2.reload
 
       expect(json).to eq('status' => 'Invalid token')

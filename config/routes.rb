@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :trips
   resources :registrations, only: :create
-  resources :confirmations, only: :create
+  # resources :confirmations, only: :create
+  get 'confirmations', to: 'confirmations#confirm'
   resources :dashboards, only: :index
 end
