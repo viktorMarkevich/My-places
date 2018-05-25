@@ -10,8 +10,8 @@ describe AuthenticationController, type: :controller do
         let(:user) { create :user }
 
         it 'should return empty "auth_token"' do
-          post 'authenticate', params: { email: user.email,
-                                         password: '123456' }, as: :json
+          post 'authenticate', params: { login: { email: user.email,
+                                         password: '123456' } }, as: :json
           expect(json['auth_token'].present?).to eq false
         end
       end
@@ -22,8 +22,8 @@ describe AuthenticationController, type: :controller do
           user.update_attributes(confirmation_token: nil, confirmed_at: Time.now.utc) # strange!
         end
         it 'should return empty "auth_token"' do
-          post 'authenticate', params: { email: user.email,
-                                         password: '123456' }, as: :json
+          post 'authenticate', params: { login: { email: user.email,
+                                         password: '123456' } }, as: :json
           user.reload
           expect(json['auth_token'].present?).to eq true
         end
@@ -32,9 +32,9 @@ describe AuthenticationController, type: :controller do
 
     context 'when the user is not exist' do
       it 'responds with a auth_token' do
-        post 'authenticate', params: { email: 'fake@email.com',
-                                       password: '123456' }, as: :json
-        expect(json).to eq({'message' => 'Please make registration or confirm your account' })
+        post 'authenticate', params: { login: { email: 'fake@email.com',
+                                       password: '123456' } }, as: :json
+        expect(json).to eq({'message' => 'Please register or confirm your account' })
       end
     end
   end
