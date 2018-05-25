@@ -28,6 +28,10 @@ class User < ApplicationRecord
     save(validate: false)
   end
 
+  def token_is_confirmed?
+    confirmation_token.nil? && confirmed_at.present?
+  end
+
   private
 
     def generate_confirmation_instructions
