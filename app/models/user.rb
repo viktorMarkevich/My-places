@@ -14,8 +14,12 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def set_confirmation
+  def set_confirmation # for rspec
     generate_confirmation_email
+  end
+
+  def token_is_confirmed?
+    confirmation_token.nil? && confirmed_at.present?
   end
 
   def confirmation_token_valid?
@@ -26,10 +30,6 @@ class User < ApplicationRecord
     self.confirmation_token = nil
     self.confirmed_at = Time.now.utc
     save(validate: false)
-  end
-
-  def token_is_confirmed?
-    confirmation_token.nil? && confirmed_at.present?
   end
 
   private
