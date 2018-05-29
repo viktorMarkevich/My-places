@@ -34,7 +34,7 @@ describe AuthenticationController, type: :controller do
       it 'responds with a auth_token' do
         post 'authenticate', params: { login: { email: 'fake@email.com',
                                        password: '123456' } }, as: :json
-        expect(json).to eq({'message' => 'Please register or confirm your account' })
+        expect(json).to eq("error" => {"user_authentication"=>["invalid credentials"]})
       end
     end
   end
