@@ -1,52 +1,14 @@
 class User < ApplicationRecord
   has_secure_password
-  has_secure_token :confirmation_token
 
-  has_many :trips
+  validates :email, :name, :password, :password_confirmation, presence: true, on: :create
+  validates :email, :name, :password, presence: true, on: :update
 
-  before_create :generate_confirmation_instructions
-  after_create :generate_confirmation_email
+  enum role: %i[user admin].freeze
 
-  validates :email, :first_name, :last_name, :password, :password_confirmation, presence: true, on: :create
-  validates :email, :first_name, :last_name, :password, presence: true, on: :update
+  scope :user_list, -> { where(role: 'user') }
 
-  def full_name
-    "#{first_name} #{last_name}"
+  def admin?
+    role == 'admin'
   end
-
-  def set_confirmation # for rspec
-    generate_confirmation_email
-  end
-
-  def token_is_confirmed?
-    confirmation_token.nil? && confirmed_at.present?
-  end
-
-  def confirmation_token_valid?
-    (self.confirmation_sent_at + 2.days) > Time.now.utc
-  end
-
-  def mark_as_confirmed!
-    self.confirmation_token = nil
-    self.confirmed_at = Time.now.utc
-    save(validate: false)
-  end
-
-  private
-
-    def generate_confirmation_instructions
-      self.confirmation_token = generate_token
-      self.confirmation_sent_at = Time.now.utc
-    end
-
-    def generate_token
-      loop do
-        token = SecureRandom.hex(10)
-        break token unless User.where(confirmation_token: token).exists?
-      end
-    end
-
-    def generate_confirmation_email
-      ConfirmationMailer.send_confirmation_email(self, full_name, email).deliver_now
-    end
 end

@@ -5,24 +5,33 @@ describe RegistrationsController, type: :controller do
   let(:json) { JSON.parse(response.body) }
   let(:user) { build :user }
 
-  context 'when the user is not exist' do
-    before :each do
-      post :create, params: { user: { email: user.email,
-                                      first_name: user.first_name,
-                                      last_name: user.last_name,
-                                      password: user.password,
-                                      password_confirmation: user.password_confirmation }}, as: :json
-    end
+  describe 'User as User role' do
+    context 'when the user is not exist' do
+      before :each do
+        post :create, params: attributes_for(:user).merge!(role: 'admin'), as: :json
+      end
 
-    it 'responds with a auth_token' do
-      expect(json).to eq('status' => 'User created successfully')
-      expect(User.count).to eq 1
-      expect(User.last.confirmation_token.present?).to eq true
-      expect(User.last.confirmation_sent_at.present?).to eq true
+      it 'responds with a auth_token' do
+        expect(json['message']).to eq('Account created successfully')
+        expect(json['auth_token'].present?).to eq true
+        expect(User.count).to eq 1
+        expect(User.last.role).to eq 'admin'
+      end
     end
+  end
 
-    it 'sends a confirmation email' do
-      expect{ User.last.set_confirmation }.to change { ActionMailer::Base.deliveries.count }.by(1)
+  describe 'User as Admin role' do
+    context 'when the user is not exist' do
+      before :each do
+        post :create, params: attributes_for(:user), as: :json
+      end
+
+      it 'responds with a auth_token' do
+        expect(json['message']).to eq('Account created successfully')
+        expect(json['auth_token'].present?).to eq true
+        expect(User.count).to eq 1
+        expect(User.last.role).to eq 'user'
+      end
     end
   end
 end
