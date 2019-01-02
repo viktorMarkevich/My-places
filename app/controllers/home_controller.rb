@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    render json: { data: 'Hello World!', status: 200}
+    p '*'*100
+    render json: { data: 'Hello World from backend!', status: 200 }
   end
 end
