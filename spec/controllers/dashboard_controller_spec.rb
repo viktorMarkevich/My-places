@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe HomeController, type: :controller do
+RSpec.describe DashboardController, type: :controller do
 
   describe 'GET #index' do
     let(:json) { JSON.parse(response.body) }

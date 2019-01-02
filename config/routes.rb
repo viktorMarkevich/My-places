@@ -4,9 +4,10 @@ Rails.application.routes.draw do
   post 'signup', to: 'registrations#create'
 
 
-  root 'home#index'
+  # root 'dashboard#index'
+  get '/dashboard', to: 'dashboard#index'
 
-  namespace :admin do
+        namespace :admin do
     resources :users
   end
 end

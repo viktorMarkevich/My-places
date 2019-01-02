@@ -8,10 +8,6 @@ class ApplicationController < ActionController::API
   private
 
   def authorize_request
-    p '*'*100
-    p request.headers
-    p '*'*100
-
     @current_user = (AuthorizeApiRequest.new(request.headers).call)[:user]
   end
 end
